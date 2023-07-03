@@ -5,26 +5,32 @@
   </body>
   <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
-  <script>
+  <!-- 브라우저가 JSX를 사용한 코드를 이해할 수 있도록 babel을 import -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
     const root = document.getElementById("root");
-    /* span 대신에 h3로 작성, 마우스를 올리면 함수가 실행되도록(기본함수) */
-    const h3 = React.createElement(
-      "h3",
-      {
-        onMouseEnter: () => console.log("mouse enter"),
-      },
-      "Hello I'm a h3"
+    /* JSX를 사용해서 지난 시간까지 있던 h3와 btn을 만들어줌 */
+    /* Container에 담아서 HTML에 표현해주기 위해 함수 형태로 바꿈 */
+    const Title = () => (
+      <h3 id="title" onMouseEnter={() => console.log("mouse enter")}>
+        Hello I'm a title
+      </h3>
     );
-    const btn = React.createElement("button", null, "Click me");
-    /* container라는 div를 만들어서 h3, btn을 넣어줌 */
-    const container = React.createElement(
-      "div",
-      {
-        onClick: () => console.log("I'm clicked"),
-      },
-      [h3, btn]
+    const Button = () => (
+      <button
+        style={{ backgroundColor: "tomato" }}
+        onClick={() => console.log("I'm clicked")}
+      >
+        Click me
+      </button>
     );
-    /* 그리고 container를 root에 render */
-    ReactDOM.render(container, root);
+    /* 컴포넌트의 첫 글자는 반드시 대문자여야 함, 아니면 태그라고 인식 */
+    const Container = () => (
+      <div>
+        <Title />
+        <Button />
+      </div>
+    );
+    ReactDOM.render(<Container />, root);
   </script>
 </html>
