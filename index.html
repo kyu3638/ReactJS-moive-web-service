@@ -1,7 +1,25 @@
 <!DOCTYPE html>
 <html>
-  <body></body>
-  <!-- React를 import 해주고, 나머지는 다음 강의에서! -->
+  <body>
+    <div id="root"></div>
+  </body>
   <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+  <script>
+    const root = document.getElementById("root");
+    /*
+     * span태그를 생성할 건데 반드시 이름을 태그명과 같게 해줄 필요는 없음
+     * createElement에 인자로 들어가는 문자열은 태그명과 같아야 함
+     * createElement 함수의 두번째 인자로 span에 들어가는 property를 작성할 수 있음
+     * 세번쨰 인자는 span안에 들어갈 텍스트
+     * 물론 이건 설명을 위한 어려운 방식이고 앞으로는 쉬운 방식을 설명해 준다고 한다.
+     */
+    const span = React.createElement(
+      "span",
+      { id: "sexy-span", style: { color: "red" } },
+      "Hello I'm a span"
+    );
+    /* render와 아래 함수의 의미는 React element를 가지고 HTML로 만들어 root안에 배치한다는 것 */
+    ReactDOM.render(span, root);
+  </script>
 </html>
