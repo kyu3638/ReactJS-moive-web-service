@@ -8,22 +8,26 @@
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script type="text/babel">
     const root = document.getElementById("root");
-    /* counter라는 변수를 JSX에 전달하는 방법을 설명 */
-    let counter = 0;
-    function countUp() {
-      counter += 1;
-      reRender();
+
+    function App() {
+      // const data = React.useState();
+      /* console.log(data)를 해보면 [undefined, ƒ]와 같이 배열이 출력됨 
+      undefined가 어떤 값이고, f는 data를 바꿀 때 사용하는 함수 */
+      // console.log(data);
+      /* 즉 useState의 첫번째 인자가 초기값, 두번째 인자가 modifier라고 할 수 있음 */
+      /* 
+      const counter = data[0];
+      const modifier = date[1];
+      이것도 비효율적이니까 아래와 같이 값을 꺼내서 사용할 수 있음 
+      */
+      const [counter, modifier] = React.useState(0);
+      return (
+        <div>
+          <h3>Total Clicks : {counter}</h3>
+          <button>Click me!</button>
+        </div>
+      );
     }
-    function reRender() {
-      ReactDOM.render(<Container />, root);
-    }
-    const Container = () => (
-      <div>
-        <h3>Total Clicks : {counter}</h3>
-        <button onClick={countUp}>Click me!</button>
-      </div>
-    );
-    /* Container에 대한 업데이트는 최초에 한번만 일어나기 때문에 버튼 클릭을 통해 counter += 1 되는게 브라우저에 반영되지 않는 문제 */
-    reRender();
+    ReactDOM.render(<App />, root);
   </script>
 </html>
