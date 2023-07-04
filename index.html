@@ -5,32 +5,25 @@
   </body>
   <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
-  <!-- 브라우저가 JSX를 사용한 코드를 이해할 수 있도록 babel을 import -->
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script type="text/babel">
     const root = document.getElementById("root");
-    /* JSX를 사용해서 지난 시간까지 있던 h3와 btn을 만들어줌 */
-    /* Container에 담아서 HTML에 표현해주기 위해 함수 형태로 바꿈 */
-    const Title = () => (
-      <h3 id="title" onMouseEnter={() => console.log("mouse enter")}>
-        Hello I'm a title
-      </h3>
-    );
-    const Button = () => (
-      <button
-        style={{ backgroundColor: "tomato" }}
-        onClick={() => console.log("I'm clicked")}
-      >
-        Click me
-      </button>
-    );
-    /* 컴포넌트의 첫 글자는 반드시 대문자여야 함, 아니면 태그라고 인식 */
+    /* counter라는 변수를 JSX에 전달하는 방법을 설명 */
+    let counter = 0;
+    function countUp() {
+      counter += 1;
+      reRender();
+    }
+    function reRender() {
+      ReactDOM.render(<Container />, root);
+    }
     const Container = () => (
       <div>
-        <Title />
-        <Button />
+        <h3>Total Clicks : {counter}</h3>
+        <button onClick={countUp}>Click me!</button>
       </div>
     );
-    ReactDOM.render(<Container />, root);
+    /* Container에 대한 업데이트는 최초에 한번만 일어나기 때문에 버튼 클릭을 통해 counter += 1 되는게 브라우저에 반영되지 않는 문제 */
+    reRender();
   </script>
 </html>
