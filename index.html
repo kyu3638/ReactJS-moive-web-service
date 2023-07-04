@@ -10,17 +10,24 @@
     const root = document.getElementById("root");
 
     function App() {
-      const [counter, setCounter] = React.useState(0);
-      const onClick = () => {
-        /* modifier는 counter를 업데이트하고 리렌더링을 호출할 것 */
-        // setCounter(counter + 1);
-        /* 현재 state를 바탕으로 다음 state를 계산하고 싶다면, 아래와 같이 함수의 형태로 적는게 더 안전함(아마 자바스크립트의 불안정성을 방지하고자 하는 듯?) */
-        setCounter((current) => current + 1);
+      const [minutes, setMinutes] = React.useState();
+      const onChange = (event) => {
+        setMinutes(event.target.value);
       };
       return (
         <div>
-          <h3>Total Clicks : {counter}</h3>
-          <button onClick={onClick}>Click me!</button>
+          <h1>Super Converter</h1>
+          <label for="minutes">Minutes</label>
+          <input
+            value={minutes}
+            id="minutes"
+            placeholder="Minutes"
+            type="number"
+            onChange={onChange}
+          />
+          <h4>You want to convert {minutes}</h4>
+          <label for="hours">Hours</label>
+          <input id="hours" placeholder="Hours" type="number" />
         </div>
       );
     }
