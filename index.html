@@ -7,107 +7,37 @@
   <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script type="text/babel">
-    function MinutesToHours() {
-      const root = document.getElementById("root");
-      const [amount, setAmount] = React.useState();
-      const [inverted, setInverted] = React.useState(false);
-      const onChange = (event) => {
-        setAmount(event.target.value);
-      };
-      const reset = () => setAmount(0);
-      const onFlip = () => {
-        reset();
-        setInverted((current) => !current);
-      };
+    function Btn({ text, onClick }) {
+      console.log(text, "was rendered");
       return (
-        <div>
-          <div>
-            <label htmlFor="minutes">Minutes</label>
-            <input
-              value={inverted ? amount * 60 : amount}
-              id="minutes"
-              placeholder="Minutes"
-              type="number"
-              onChange={onChange}
-              /* if(inverted === false) false, else true */
-              disabled={inverted}
-            />
-          </div>
-          <div>
-            <label htmlFor="hours">Hours</label>
-            <input
-              value={inverted ? amount : Math.round(amount / 60)}
-              id="hours"
-              placeholder="Hours"
-              type="number"
-              /* if(inverted === false) true, else false */
-              disabled={!inverted}
-              onChange={onChange}
-            />
-          </div>
-          <button onClick={reset}>Reset</button>
-          <button onClick={onFlip}>{inverted ? "Turn back" : "Invert"}</button>
-        </div>
+        <button
+          onClick={onClick}
+          style={{
+            backgroundColor: "tomato",
+            color: "white",
+            padding: "10px 20px",
+            border: 0,
+            borderRadius: 10,
+          }}
+        >
+          {text}
+        </button>
       );
     }
-
-    function KmToMiles() {
-      const root = document.getElementById("root");
-      const [distance, setDistance] = React.useState(0);
-      const [flipped, setFlipped] = React.useState(false);
-      function onChange(event) {
-        setDistance(event.target.value);
-      }
-      function onClick(event) {
-        setFlipped(!flipped);
-      }
-      return (
-        <div>
-          <div>
-            <label htmlFor="km">KM</label>
-            <input
-              onChange={onChange}
-              id="km"
-              type="number"
-              placeholder="km"
-              value={flipped ? distance * 1.609 : distance}
-              disabled={flipped}
-            />
-          </div>
-          <div>
-            <label htmlFor="miles">miles</label>
-            <input
-              onChange={onChange}
-              id="miles"
-              type="number"
-              placeholder="miles"
-              value={!flipped ? distance * 0.621371 : distance}
-              disabled={!flipped}
-            />
-          </div>
-          <button>Reset</button>
-          <button onClick={onClick}>Flip</button>
-        </div>
-      );
-    }
-
+    const MemorizedBtn = React.memo(Btn);
     function App() {
-      const [index, setIndex] = React.useState("xx");
-      const onSelect = (event) => {
-        setIndex(event.target.value);
-      };
+      /* value의 초기값으로 "Save Changes" */
+      const [value, setValue] = React.useState("Save Changes");
+      const changeValue = () => setValue("Revert Changes");
       return (
         <div>
-          <h1>Super Converter</h1>
-          <select value={index} onChange={onSelect}>
-            <option value="xx">Select your unit</option>
-            <option value="0">Minutes & Hours</option>
-            <option value="1">Km & Miles </option>
-          </select>
-          <hr />
-          {index === "xx" ? "Select your unit" : null}
-          {index === "0" ? <MinutesToHours /> : null}
-          {index === "1" ? <KmToMiles /> : null}
+          {/* Btn으로 들어가는 props 설정, 여기서 중요한 것은 onClick은 이벤트리스너가 아니라 컴포넌트로 전달되는 propname일 뿐! */}
+          {/* 첫번째 버튼의 props는 렌더링 되면서 값이 바뀔 것 */}
+          <MemorizedBtn text={value} onClick={changeValue} />
+          {/* 두번째 버튼의 props는 다시 렌더링 할 필요가 없음(값이 변하지 않기 때문에)
+          그렇다면 항상 모든 것들을 리렌더링 하지 말고 바뀌는 것들만 리렌더링 하는게 옳다
+          React.memo를 사용하면 업데이트 되는 것들만 리렌더링 된다. */}
+          <MemorizedBtn text="Continue" />
         </div>
       );
     }
