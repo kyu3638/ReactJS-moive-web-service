@@ -3,44 +3,44 @@
   <body>
     <div id="root"></div>
   </body>
-  <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react@17.0.2/umd/react.development.js"></script>
   <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+  <!-- 전달되는 prop의 타입을 확인하기 위해 import -->
+  <script src="https://unpkg.com/prop-types@15.7.2/prop-types.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script type="text/babel">
-    function Btn({ text, onClick }) {
-      console.log(text, "was rendered");
+    function Btn({ text, fontSize = 12 }) {
+      /* fontSize가 전달되지 않을 때는 14로 설정 */
       return (
         <button
-          onClick={onClick}
           style={{
             backgroundColor: "tomato",
             color: "white",
             padding: "10px 20px",
             border: 0,
             borderRadius: 10,
+            fontSize,
           }}
         >
           {text}
         </button>
       );
     }
-    const MemorizedBtn = React.memo(Btn);
+    /* prop의 type을 체크해주는 기능, text, fontSize에 맞는 데이터 타입을 넣지 않으면 오류로 인식 */
+    Btn.propTypes = {
+      /* text는 문자열이어야 하며, 반드시 작성되어야 함 */
+      text: PropTypes.string.isRequired,
+      fontSize: PropTypes.number,
+    };
     function App() {
-      /* value의 초기값으로 "Save Changes" */
-      const [value, setValue] = React.useState("Save Changes");
-      const changeValue = () => setValue("Revert Changes");
       return (
         <div>
-          {/* Btn으로 들어가는 props 설정, 여기서 중요한 것은 onClick은 이벤트리스너가 아니라 컴포넌트로 전달되는 propname일 뿐! */}
-          {/* 첫번째 버튼의 props는 렌더링 되면서 값이 바뀔 것 */}
-          <MemorizedBtn text={value} onClick={changeValue} />
-          {/* 두번째 버튼의 props는 다시 렌더링 할 필요가 없음(값이 변하지 않기 때문에)
-          그렇다면 항상 모든 것들을 리렌더링 하지 말고 바뀌는 것들만 리렌더링 하는게 옳다
-          React.memo를 사용하면 업데이트 되는 것들만 리렌더링 된다. */}
-          <MemorizedBtn text="Continue" />
+          <Btn text="Save Changes" fontSize={18} />
+          <Btn text="asdf" fontSize={14} />
         </div>
       );
     }
+    const root = document.getElementById("root");
     ReactDOM.render(<App />, root);
   </script>
 </html>
