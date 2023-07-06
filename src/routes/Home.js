@@ -1,3 +1,6 @@
+import { useEffect, useState } from "react";
+import Movie from "../components/Movie";
+
 function Home() {
   /* api의 로딩 여부를 체크하고 로딩 전/후 화면을 위해 사용하는 boolean */
   const [loading, setLoading] = useState(true);
