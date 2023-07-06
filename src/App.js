@@ -1,35 +1,27 @@
 import { useState, useEffect, useDeferredValue } from "react";
 
+/* Hello 컴포넌트가 실행될 때 useEffect를 거쳐 hiFn이 실행되고, 컴포넌트가 종료될 때 byeFn이 실행된다. */
+function Hello() {
+  function byeFn() {
+    console.log("bye :)");
+  }
+  function hiFn() {
+    console.log("created :)");
+    return byeFn;
+  }
+  useEffect(hiFn, []);
+  return <h1>Hello</h1>;
+}
+
 function App() {
-  const [counter, setValue] = useState(0);
-  const [keyword, setKeyword] = useState("");
-  const onClick = () => setValue((prev) => prev + 1);
-  const onChange = (event) => {
-    setKeyword(event.target.value);
+  const [showing, setShowing] = useState(false);
+  const onClick = () => {
+    setShowing((prev) => !prev);
   };
-  // console.log("i run all the time");
-  useEffect(() => {
-    console.log("I run only once");
-  }, []);
-  useEffect(() => {
-    console.log("I run when 'keyword' changes");
-  }, [keyword]);
-  useEffect(() => {
-    console.log("I run when 'counter' changes");
-  }, [counter]);
-  useEffect(() => {
-    console.log("I run only when 'keyword' or 'counter' changes");
-  }, [keyword, counter]);
   return (
     <div>
-      <input
-        value={keyword}
-        onChange={onChange}
-        type="text"
-        placeholder="Search here..."
-      />
-      <h1>{counter}</h1>
-      <button onClick={onClick}>click me</button>
+      {showing ? <Hello /> : null}
+      <button onClick={onClick}>{showing ? "Hide" : "Show"}</button>
     </div>
   );
 }
